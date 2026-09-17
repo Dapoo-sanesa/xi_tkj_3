@@ -63,16 +63,21 @@
 	<script>
 		const welcomeScreen = document.querySelector("#welcomeScreen");
 		const welcomeSeenKey = "kelas-welcome-seen";
-		if (localStorage.getItem(welcomeSeenKey) === "true") welcomeScreen.remove();
-		const closeWelcomeScreen = () => {
-			localStorage.setItem(welcomeSeenKey, "true");
-			welcomeScreen.classList.add("welcome-screen-hidden");
-			window.setTimeout(() => welcomeScreen.remove(), 450);
-		};
-		welcomeScreen.addEventListener("click", closeWelcomeScreen);
-		welcomeScreen.addEventListener("keydown", event => {
-			if (event.key === "Enter" || event.key === " ") closeWelcomeScreen();
-		});
+		if (welcomeScreen) {
+			if (localStorage.getItem(welcomeSeenKey) === "true") {
+				welcomeScreen.remove();
+			} else {
+				const closeWelcomeScreen = () => {
+					localStorage.setItem(welcomeSeenKey, "true");
+					welcomeScreen.classList.add("welcome-screen-hidden");
+					window.setTimeout(() => welcomeScreen.remove(), 450);
+				};
+				welcomeScreen.addEventListener("click", closeWelcomeScreen, { once: true });
+				welcomeScreen.addEventListener("keydown", event => {
+					if (event.key === "Enter" || event.key === " ") closeWelcomeScreen();
+				});
+			}
+		}
 	</script>
 </body>
 </html>

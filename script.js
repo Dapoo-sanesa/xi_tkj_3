@@ -6,7 +6,7 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 const pageTransitionDuration = reducedMotion ? 0 : 300;
 window.addEventListener("pageshow", () => document.body.classList.remove("page-leaving"));
 document.addEventListener("click", event => {
-	const link = event.target.closest("a");
+	const link = event.target instanceof Element ? event.target.closest("a") : null;
 	if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === "_blank" || link.hasAttribute("download")) return;
 	const destination = new URL(link.href, window.location.href);
 	if (destination.origin !== window.location.origin || destination.href === window.location.href || (destination.hash && destination.pathname === window.location.pathname)) return;
