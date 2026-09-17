@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Kartu identitas siswa XI TKJ 3" />
+	<title>Kartu Siswa | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+	<style>
+		.identity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+		.identity-card { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(10, 10, 13, .9); text-align: center; }
+		.identity-card img { width: 112px; height: 112px; padding: 8px; margin: 12px auto; display: block; background: white; border-radius: 8px; }
+		.identity-card strong { display: block; font: 600 14px "Space Grotesk", sans-serif; }
+		.identity-card small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
+		@media (max-width: 700px) { .identity-grid { grid-template-columns: repeat(2, 1fr); } }
+		@media (max-width: 390px) { .identity-grid { grid-template-columns: 1fr; } }
+	</style>
+</head>
+<body class="focus-page">
+	<a class="focus-back" href="layanan-kelas.html" aria-label="Kembali ke akses kelas" title="Kembali ke akses kelas">←</a>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a class="active" href="kartu-siswa.html"><span class="nav-icon">▣</span> Kartu siswa</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+		<main>
+			<header class="topbar"><div><div class="eyebrow">Identitas digital • XI TKJ 3</div><h1>Kartu siswa</h1><p class="subtitle">Setiap kartu memiliki QR Code unik untuk absensi otomatis.</p></div><div class="date">TOTAL KARTU<strong>34 siswa</strong></div></header>
+			<section class="identity-grid" id="identityGrid"></section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const identityGrid = document.querySelector("#identityGrid");
+		identityGrid.innerHTML = students.map((name, index) => {
+			const code = `XI-TKJ3-${String(index + 1).padStart(2, "0")}`;
+			const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(code)}`;
+			return `<article class="identity-card"><div class="eyebrow">Absen ${String(index + 1).padStart(2, "0")}</div><img src="${qrUrl}" alt="QR Code ${name}" /><strong>${name}</strong><small>${code}</small></article>`;
+		}).join("");
+	</script>
+</body>
+</html>

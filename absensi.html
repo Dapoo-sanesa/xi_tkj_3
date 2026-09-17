@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Absensi harian kelas XI TKJ 3" />
+	<title>Absensi | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a class="active" href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+
+		<main>
+			<header class="topbar">
+				<div><div class="eyebrow">Presensi kelas • XI TKJ 3</div><h1>Absensi harian</h1><p class="subtitle">Catat kehadiran siswa setiap hari dan pantau rekapnya dari beranda.</p></div>
+				<div class="date">TOTAL SISWA<strong>34 siswa</strong></div>
+			</header>
+
+			<section class="attendance-panel panel">
+				<div class="attendance-toolbar"><div><div class="eyebrow">Pilih tanggal</div><input id="attendanceDate" class="attendance-date-input" type="date" aria-label="Pilih tanggal absensi" /></div><button id="attendanceSave" class="primary-button" type="button">Simpan absensi</button></div>
+				<div class="attendance-summary" id="attendanceSummary"></div>
+				<div class="attendance-list" id="attendanceList"></div>
+			</section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Dashboard Kelas XI TKJ 3" />
+	<title>Ruang Kelas | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div id="welcomeScreen" class="welcome-screen" role="button" tabindex="0" aria-label="Klik untuk masuk ke halaman utama">
+		<div class="welcome-title">XI TKJ 3</div>
+		<div class="welcome-hint">Klik di mana saja untuk melanjutkan</div>
+	</div>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a class="active" href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+
+		<main id="beranda">
+			<header class="topbar home-topbar">
+				<div class="class-heading"><div class="eyebrow">Portal kelas • Semester genap</div><h1><span>XI TKJ</span><span class="class-number">3</span></h1><p class="subtitle">Satu ruang untuk tumbuh, belajar, dan saling mendukung.</p></div>
+				<div class="date">HARI INI<strong id="today">Memuat tanggal...</strong><span id="liveClock">00:00:00</span></div>
+			</header>
+
+			<section class="hero" aria-label="Ringkasan kelas">
+				<article class="hero-card"><div class="eyebrow">Selamat datang</div><h2>Halo siswa XI TKJ 3</h2><p>Temukan informasi kelas dan kenali seluruh teman yang belajar bersama di tahun ini.</p></article>
+				<article class="panel teacher"><div class="avatar">AN</div><div><div class="eyebrow">Wali kelas</div><h3>Nur Izzah Amalia</h3><p>Guru Bahasa Jawa · Ruang Guru 04</p></div></article>
+			</section>
+
+			<section class="dashboard-lower" aria-label="Aktivitas kelas">
+				<div class="stats-panel panel">
+					<div class="panel-heading"><div><div class="eyebrow">Ringkasan kelas</div><h2>Aktivitas kita</h2></div><span class="status-dot">● Aktif</span></div>
+					<div class="stat-grid"><div><strong>34</strong><span>Siswa</span></div><div><strong>11</strong><span>Mata pelajaran</span></div><div><strong id="attendanceRate">92%</strong><span>Kehadiran hari ini</span></div></div>
+				</div>
+				<div class="agenda-panel panel">
+					<div class="panel-heading"><div><div class="eyebrow">Agenda terdekat</div><h2>Minggu ini</h2></div><span class="agenda-date">16—20 SEP</span></div>
+					<div class="agenda-item"><time>18<br><small>SEP</small></time><div><strong>Praktik jaringan komputer</strong><span>Laboratorium TKJ · 08.00</span></div></div>
+					<div class="agenda-item"><time>20<br><small>SEP</small></time><div><strong>Rapat persiapan kelas</strong><span>Ruang XI TKJ 3 · 13.00</span></div></div>
+				</div>
+				<div class="quote-panel panel"><div class="eyebrow">Pesan wali kelas</div><blockquote>“Belajar bersama membuat langkah kita lebih jauh.”</blockquote><cite>— Nur Izzah Amalia</cite></div>
+			</section>
+
+			<section class="home-attendance panel" aria-label="Pantauan absensi hari ini">
+				<div class="panel-heading attendance-live-heading"><div><div class="eyebrow">Pantauan real-time</div><h2>Absensi siswa hari ini</h2><p id="attendanceLiveDate">Memuat tanggal...</p></div><span class="live-badge"><i></i> Live</span></div>
+				<div class="home-attendance-summary" id="homeAttendanceSummary"></div>
+				<div class="home-attendance-list" id="homeAttendanceList"></div>
+			</section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const welcomeScreen = document.querySelector("#welcomeScreen");
+		const welcomeSeenKey = "kelas-welcome-seen";
+		if (localStorage.getItem(welcomeSeenKey) === "true") welcomeScreen.remove();
+		const closeWelcomeScreen = () => {
+			localStorage.setItem(welcomeSeenKey, "true");
+			welcomeScreen.classList.add("welcome-screen-hidden");
+			window.setTimeout(() => welcomeScreen.remove(), 450);
+		};
+		welcomeScreen.addEventListener("click", closeWelcomeScreen);
+		welcomeScreen.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.key === " ") closeWelcomeScreen();
+		});
+	</script>
+</body>
+</html>

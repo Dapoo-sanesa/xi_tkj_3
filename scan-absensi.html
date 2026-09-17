@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Scan absensi siswa XI TKJ 3" />
+	<title>Scan Absensi | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+	<style>
+		.scan-layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
+		.scanner-card, .scan-result { padding: 26px; }
+		#reader { width: 100%; min-height: 260px; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: #060609; }
+		.scan-help { color: var(--muted); margin: 16px 0 0; font-size: 12px; line-height: 1.6; }
+		.manual-form { display: flex; gap: 8px; margin-top: 20px; }
+		.manual-form input { flex: 1; min-width: 0; color: var(--white); background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 7px; padding: 11px; outline: none; font: 12px "DM Sans", sans-serif; }
+		.primary-button { border: 0; border-radius: 7px; padding: 11px 15px; color: white; background: var(--purple); cursor: pointer; font: 600 12px "Space Grotesk", sans-serif; }
+		.primary-button:hover { background: var(--purple-light); }
+		.scan-result { display: flex; flex-direction: column; justify-content: center; min-height: 330px; }
+		.scan-result h2 { margin: 12px 0 8px; font-size: 26px; }
+		.scan-result p { color: var(--muted); margin: 0; font-size: 13px; line-height: 1.6; }
+		.scan-success { color: #8effc5 !important; }
+		@media (max-width: 700px) { .scan-layout { grid-template-columns: 1fr; } }
+	</style>
+</head>
+<body class="focus-page">
+	<a class="focus-back" href="layanan-kelas.html" aria-label="Kembali ke akses kelas" title="Kembali ke akses kelas">←</a>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a class="active" href="scan-absensi.html"><span class="nav-icon">⌁</span> Scan absensi</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+		<main>
+			<header class="topbar"><div><div class="eyebrow">Presensi cepat • XI TKJ 3</div><h1>Scan absensi</h1><p class="subtitle">Arahkan kamera ke QR Code kartu siswa untuk mencatat kehadiran.</p></div><div class="date">WAKTU SEKARANG<strong id="scanDate">Memuat tanggal...</strong><span id="scanClock">00:00:00 WIB</span></div></header>
+			<section class="scan-layout">
+				<article class="scanner-card panel"><div class="eyebrow">Kamera scanner</div><div id="reader"></div><p class="scan-help">Izinkan akses kamera saat diminta. Pastikan QR Code terlihat jelas dan cukup terang.</p><form class="manual-form" id="manualForm"><input id="manualCode" autocomplete="off" placeholder="Atau masukkan kode, contoh XI-TKJ3-01" aria-label="Kode kartu siswa" /><button class="primary-button" type="submit">Absensi</button></form></article>
+				<article class="scan-result panel" id="scanResult"><div class="eyebrow">Hasil scan</div><h2>Belum ada scan</h2><p>Nama siswa dan status hadir akan muncul di sini.</p></article>
+			</section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const result = document.querySelector("#scanResult");
+		const manualForm = document.querySelector("#manualForm");
+		const manualCode = document.querySelector("#manualCode");
+		const scanDate = document.querySelector("#scanDate");
+		const scanClock = document.querySelector("#scanClock");
+		const getLocalDateKey = date => {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, "0");
+			const day = String(date.getDate()).padStart(2, "0");
+			return `${year}-${month}-${day}`;
+		};
+		const updateScanDateTime = () => {
+			const now = new Date();
+			if (scanDate) scanDate.textContent = new Intl.DateTimeFormat("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(now);
+			if (scanClock) scanClock.textContent = `${new Intl.DateTimeFormat("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(now)} WIB`;
+		};
+		updateScanDateTime();
+		setInterval(updateScanDateTime, 1000);
+		const todayKey = () => getLocalDateKey(new Date());
+		const showResult = (code) => {
+			const match = /^XI-TKJ3-(\d{2})$/i.exec(code.trim());
+			const index = match ? Number(match[1]) - 1 : -1;
+			if (index < 0 || !students[index]) {
+				result.innerHTML = '<div class="eyebrow">Hasil scan</div><h2>Kode tidak ditemukan</h2><p>Periksa kembali QR Code atau kode kartu siswa.</p>';
+				return;
+			}
+			const storageKey = "xi-tkj-3-attendance";
+			const data = JSON.parse(localStorage.getItem(storageKey) || "{}");
+			const records = data[todayKey()] || Object.fromEntries(students.map(name => [name, "belum-hadir"]));
+			records[students[index]] = "hadir";
+			data[todayKey()] = records;
+			localStorage.setItem(storageKey, JSON.stringify(data));
+			const scannedAt = new Date();
+			const scannedDate = new Intl.DateTimeFormat("id-ID", { dateStyle: "full", timeStyle: "medium" }).format(scannedAt);
+			result.innerHTML = `<div class="eyebrow">Absensi berhasil</div><h2>${students[index]}</h2><p class="scan-success">Status otomatis berubah menjadi Hadir.</p><p>Absen ${String(index + 1).padStart(2, "0")} · ${scannedDate} WIB</p>`;
+			manualCode.value = "";
+		};
+		manualForm.addEventListener("submit", event => { event.preventDefault(); showResult(manualCode.value); });
+		if ("BarcodeDetector" in window) {
+			const video = document.createElement("video");
+			video.setAttribute("playsinline", "true");
+			video.style.width = "100%";
+			document.querySelector("#reader").append(video);
+			navigator.mediaDevices?.getUserMedia({ video: { facingMode: "environment" } }).then(stream => {
+				video.srcObject = stream; video.play();
+				const detector = new BarcodeDetector({ formats: ["qr_code"] });
+				const scan = async () => { try { const codes = await detector.detect(video); if (codes[0]?.rawValue) showResult(codes[0].rawValue); } catch (_) {} requestAnimationFrame(scan); };
+				scan();
+			}).catch(() => { document.querySelector("#reader").innerHTML = '<p class="scan-help">Kamera tidak tersedia. Gunakan input kode manual di bawah.</p>'; });
+		} else {
+			document.querySelector("#reader").innerHTML = '<p class="scan-help">Browser ini belum mendukung scanner kamera. Gunakan input kode manual di bawah.</p>';
+		}
+	</script>
+</body>
+</html>

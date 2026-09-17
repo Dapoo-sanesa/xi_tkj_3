@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Jadwal pelajaran kelas XI TKJ 3" />
+	<title>Jadwal | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a class="active" href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+
+		<main>
+			<header class="topbar">
+				<div><div class="eyebrow">Agenda kelas • XI TKJ 3</div><h1>Jadwal pelajaran</h1><p class="subtitle">Rencana pembelajaran kelas XI TKJ 3 yang bisa diubah setiap saat lewat tombol pengaturan.</p></div>
+				<div class="date">SEMESTER<strong>Genap</strong></div>
+			</header>
+
+			<section class="schedule-summary panel">
+				<div class="panel-heading schedule-header">
+					<div><div class="eyebrow">Ringkasan</div><h2>Jam belajar</h2></div>
+					<button id="toggleEditor" class="primary-button" type="button">Atur jadwal</button>
+				</div>
+				<div class="schedule-summary-grid">
+					<div><strong>07.30</strong><span>Jam masuk</span></div>
+					<div><strong>5 hari</strong><span>Senin–Jumat</span></div>
+					<div><strong>11 mapel</strong><span>Aktif</span></div>
+					<div><strong>1 klik</strong><span>Ubah jadwal</span></div>
+				</div>
+			</section>
+
+			<section id="scheduleEditor" class="schedule-editor panel hidden" aria-live="polite">
+				<div class="panel-heading">
+					<div><div class="eyebrow">Pengaturan</div><h2>Ubah jadwal harian</h2></div>
+					<button type="button" id="closeEditor" class="ghost-button">Tutup</button>
+				</div>
+				<form id="scheduleForm" class="schedule-form">
+					<div class="form-grid">
+						<label>
+							<span>Hari</span>
+							<select id="daySelect" required>
+								<option value="Senin">Senin</option>
+								<option value="Selasa">Selasa</option>
+								<option value="Rabu">Rabu</option>
+								<option value="Kamis">Kamis</option>
+								<option value="Jumat">Jumat</option>
+							</select>
+						</label>
+						<label>
+							<span>Jam ke</span>
+							<select id="slotSelect">
+								<option value="1">Jam ke-1</option>
+								<option value="2">Jam ke-2</option>
+								<option value="3">Jam ke-3</option>
+								<option value="4">Jam ke-4</option>
+								<option value="5">Jam ke-5</option>
+								<option value="6">Jam ke-6</option>
+								<option value="7">Jam ke-7</option>
+								<option value="8">Jam ke-8</option>
+								<option value="9">Jam ke-9</option>
+								<option value="10">Jam ke-10</option>
+							</select>
+						</label>
+					</div>
+					<div class="form-grid form-grid-compact">
+						<label>
+							<span>Jam</span>
+							<input id="timeInput" type="text" placeholder="contoh: 08.15 - 09.00" required />
+						</label>
+						<label>
+							<span>Kode mapel</span>
+							<input id="codeInput" type="text" placeholder="contoh: PAI / TKJ / PKN" />
+						</label>
+					</div>
+					<div class="form-grid form-grid-compact">
+						<label>
+							<span>Mata pelajaran</span>
+							<input id="subjectInput" type="text" placeholder="contoh: Informatika" required />
+						</label>
+						<label>
+							<span>Guru pengajar</span>
+							<input id="teacherInput" type="text" placeholder="contoh: Andi Nugraha, S.Pd" />
+						</label>
+					</div>
+					<label>
+						<span>Ruang</span>
+						<input id="roomInput" type="text" placeholder="contoh: Ruang Lab 1 / Ruang Kelas" />
+					</label>
+					<div class="schedule-actions">
+						<button type="submit" class="primary-button">Simpan jadwal</button>
+						<button type="button" id="resetSchedule" class="ghost-button">Reset default</button>
+					</div>
+				</form>
+			</section>
+
+			<section id="scheduleGrid" class="schedule-grid" aria-label="Jadwal pelajaran Senin sampai Jumat"></section>
+		</main>
+	</div>
+	<script>
+		const defaultSchedule = {
+			Senin: [
+				{ time: "07.30 - 08.15", code: "PAI", subject: "Pendidikan Agama Islam", teacher: "Hj. Siti Rohma, S.Pd.I", room: "Ruang Kelas" },
+				{ time: "08.15 - 09.00", code: "BIN", subject: "Bahasa Indonesia", teacher: "M. Afandi, S.Pd", room: "Ruang Kelas" },
+				{ time: "09.00 - 09.45", code: "MAT", subject: "Matematika", teacher: "Rina Lestari, S.Pd", room: "Ruang Kelas" },
+				{ time: "10.00 - 10.45", code: "TKJ-01", subject: "Jaringan Komputer", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" },
+				{ time: "10.45 - 11.30", code: "TKJ-02", subject: "Praktik TKJ", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" }
+			],
+			Selasa: [
+				{ time: "07.30 - 08.15", code: "PPKN", subject: "Pendidikan Pancasila", teacher: "Dewi Sartika, S.Pd", room: "Ruang Kelas" },
+				{ time: "08.15 - 09.00", code: "IPA", subject: "IPA", teacher: "Lukman Hakim, S.Pd", room: "Ruang Kelas" },
+				{ time: "09.00 - 09.45", code: "ADJ", subject: "Administrasi Jaringan", teacher: "Rizki Pratama, S.Kom", room: "Lab TKJ" },
+				{ time: "10.00 - 10.45", code: "DG", subject: "Desain Grafis", teacher: "Siti Rahma, S.Pd", room: "Lab Komputer" },
+				{ time: "10.45 - 11.30", code: "PBL", subject: "Project Based Learning", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" }
+			],
+			Rabu: [
+				{ time: "07.30 - 08.15", code: "BING", subject: "Bahasa Inggris", teacher: "Fitri Ayu, S.Pd", room: "Ruang Kelas" },
+				{ time: "08.15 - 09.00", code: "PKN", subject: "PKN", teacher: "Dewi Sartika, S.Pd", room: "Ruang Kelas" },
+				{ time: "09.00 - 09.45", code: "SIMDIG", subject: "Simulasi Digital", teacher: "Siti Rahma, S.Pd", room: "Lab Komputer" },
+				{ time: "10.00 - 10.45", code: "LAB", subject: "Laboratorium TKJ", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" },
+				{ time: "10.45 - 11.30", code: "EVAL", subject: "Evaluasi Praktik", teacher: "Rizki Pratama, S.Kom", room: "Lab TKJ" }
+			],
+			Kamis: [
+				{ time: "07.30 - 08.15", code: "SEJ", subject: "Sejarah", teacher: "Ayu Lestari, S.Pd", room: "Ruang Kelas" },
+				{ time: "08.15 - 09.00", code: "IOT", subject: "Internet of Things", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" },
+				{ time: "09.00 - 09.45", code: "SECJ", subject: "Keamanan Jaringan", teacher: "Rizki Pratama, S.Kom", room: "Lab TKJ" },
+				{ time: "10.00 - 10.45", code: "RT", subject: "Praktek Router", teacher: "Andi Nugraha, S.Kom", room: "Lab TKJ" },
+				{ time: "10.45 - 11.30", code: "DISK", subject: "Diskusi Kelompok", teacher: "Rizki Pratama, S.Kom", room: "Ruang Kelas" }
+			],
+			Jumat: [
+				{ time: "07.30 - 08.15", code: "OR", subject: "Olahraga", teacher: "Budi Santoso, S.Pd", room: "Lapangan" },
+				{ time: "08.15 - 09.00", code: "JAWA", subject: "Bahasa Jawa", teacher: "Sri Handayani, S.Pd", room: "Ruang Kelas" },
+				{ time: "09.00 - 09.45", code: "PKK", subject: "Produk Kreatif", teacher: "Siti Rahma, S.Pd", room: "Lab Komputer" },
+				{ time: "10.00 - 10.45", code: "REF", subject: "Refleksi", teacher: "Nur Izzah Amalia", room: "Ruang Kelas" },
+				{ time: "10.45 - 11.30", code: "PLAN", subject: "Persiapan Minggu Depan", teacher: "Nur Izzah Amalia", room: "Ruang Kelas" }
+			]
+		};
+
+		const scheduleKey = "kelas-jadwal-xtkj3";
+		const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+		const totalPeriods = 10;
+		const scheduleGrid = document.querySelector("#scheduleGrid");
+		const scheduleEditor = document.querySelector("#scheduleEditor");
+		const toggleEditorButton = document.querySelector("#toggleEditor");
+		const closeEditorButton = document.querySelector("#closeEditor");
+		const scheduleForm = document.querySelector("#scheduleForm");
+		const daySelect = document.querySelector("#daySelect");
+		const slotSelect = document.querySelector("#slotSelect");
+		const timeInput = document.querySelector("#timeInput");
+		const codeInput = document.querySelector("#codeInput");
+		const subjectInput = document.querySelector("#subjectInput");
+		const teacherInput = document.querySelector("#teacherInput");
+		const roomInput = document.querySelector("#roomInput");
+		const resetScheduleButton = document.querySelector("#resetSchedule");
+
+		const getSchedule = () => {
+			const raw = localStorage.getItem(scheduleKey);
+			if (!raw) return Object.fromEntries(days.map(day => [day, normalizeDay(defaultSchedule[day])]));
+			try {
+				const parsed = JSON.parse(raw);
+				const safe = {};
+				for (const day of days) {
+						safe[day] = normalizeDay(Array.isArray(parsed[day]) ? parsed[day] : defaultSchedule[day]);
+				}
+				return safe;
+			} catch {
+				return Object.fromEntries(days.map(day => [day, normalizeDay(defaultSchedule[day])]));
+			}
+		};
+
+		const saveSchedule = (data) => localStorage.setItem(scheduleKey, JSON.stringify(data));
+
+		const normalizeDay = (items) => Array.from({ length: totalPeriods }, (_, index) => ({
+			period: index + 1,
+			time: items[index]?.time || "Belum diatur",
+			code: items[index]?.code || "-",
+			subject: items[index]?.subject || "Belum diatur",
+			teacher: items[index]?.teacher || "-",
+			room: items[index]?.room || "Ruang kelas"
+		}));
+
+		const renderSchedule = () => {
+			const schedule = getSchedule();
+			scheduleGrid.innerHTML = days.map(day => `
+				<article class="day-card panel">
+					<div class="day-card-header">
+						<span class="day-name">${day}</span>
+						<span class="day-tag">10 jam pelajaran</span>
+					</div>
+					<ul class="schedule-list">
+						${(schedule[day] || []).map((item, index) => `
+							<li>
+								<span class="schedule-period">Jam ke-${index + 1}</span>
+								<span class="schedule-time">${item.time}</span>
+								<strong>${item.code || "MAPEL"} — ${item.subject}</strong>
+								<small>${item.teacher || "Guru"}</small>
+								<small>${item.room || "Ruang kelas"}</small>
+							</li>
+						`).join("")}
+					</ul>
+				</article>
+			`).join("");
+		};
+
+		const toggleEditor = () => {
+			scheduleEditor.classList.toggle("hidden");
+		};
+
+		const closeEditor = () => {
+			scheduleEditor.classList.add("hidden");
+		};
+
+		const resetSchedule = () => {
+			localStorage.setItem(scheduleKey, JSON.stringify(structuredClone(defaultSchedule)));
+			renderSchedule();
+			closeEditor();
+		};
+
+		toggleEditorButton.addEventListener("click", toggleEditor);
+		closeEditorButton.addEventListener("click", closeEditor);
+		resetScheduleButton.addEventListener("click", resetSchedule);
+
+		scheduleForm.addEventListener("submit", event => {
+			event.preventDefault();
+			const selectedDay = daySelect.value;
+			const selectedSlot = Number(slotSelect.value);
+			const schedule = getSchedule();
+			const item = {
+				time: timeInput.value.trim(),
+				code: codeInput.value.trim() || "MAPEL",
+				subject: subjectInput.value.trim(),
+				teacher: teacherInput.value.trim() || "Guru",
+				room: roomInput.value.trim() || "Ruang kelas"
+			};
+			if (!item.time || !item.subject) return;
+
+			if (!Array.isArray(schedule[selectedDay])) {
+				schedule[selectedDay] = [];
+			}
+
+			schedule[selectedDay] = normalizeDay(schedule[selectedDay]);
+			schedule[selectedDay][selectedSlot - 1] = { ...item, period: selectedSlot };
+
+			saveSchedule(schedule);
+			renderSchedule();
+			scheduleForm.reset();
+			closeEditor();
+		});
+
+		renderSchedule();
+	</script>
+</body>
+</html>

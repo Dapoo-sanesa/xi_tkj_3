@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Akun email siswa XI TKJ 3" />
+	<title>Akun Siswa | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body class="focus-page">
+	<a class="focus-back" href="layanan-kelas.html" aria-label="Kembali ke akses kelas" title="Kembali ke akses kelas">←</a>
+	<div class="shell">
+		<main>
+			<header class="topbar">
+				<div><div class="eyebrow">Akun absensi • XI TKJ 3</div><h1>Akun siswa</h1><p class="subtitle">Daftar email masuk siswa untuk kebutuhan absensi kelas.</p></div>
+				<div class="date">TOTAL AKUN<strong>34 siswa</strong></div>
+			</header>
+			<section class="account-toolbar panel">
+				<div><div class="eyebrow">Format akun</div><strong>nama.lengkap@tkj3.com</strong><p>Nama ditulis huruf kecil dan spasi diubah menjadi titik.</p></div>
+				<input id="accountSearch" class="search" type="search" placeholder="Cari nama siswa..." aria-label="Cari akun siswa" />
+			</section>
+			<section id="accountGrid" class="account-grid" aria-label="Daftar akun siswa"></section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const accountGrid = document.querySelector("#accountGrid");
+		const accountSearch = document.querySelector("#accountSearch");
+		const makeEmail = name => `${name.toLowerCase().replace(/[^a-z0-9]+/g, ".").replace(/^\.|\.$/g, "")}@tkj3.com`;
+		const renderAccounts = (query = "") => {
+			const filtered = students.filter(name => name.toLowerCase().includes(query.toLowerCase()));
+			accountGrid.innerHTML = filtered.map((name, index) => {
+				const number = String(students.indexOf(name) + 1).padStart(2, "0");
+				return `<article class="account-card panel"><span class="account-number">${number}</span><div class="account-avatar">${initials(name)}</div><div class="account-content"><strong>${name}</strong><span>${makeEmail(name)}</span><small>Akun absensi siswa</small></div><button class="copy-account" type="button" data-email="${makeEmail(name)}" aria-label="Salin email ${name}" title="Salin email">Salin</button></article>`;
+			}).join("");
+		};
+		accountGrid.addEventListener("click", event => {
+			const button = event.target.closest(".copy-account");
+			if (!button) return;
+			navigator.clipboard?.writeText(button.dataset.email);
+			button.textContent = "Tersalin";
+			window.setTimeout(() => { button.textContent = "Salin"; }, 1200);
+		});
+		accountSearch.addEventListener("input", event => renderAccounts(event.target.value));
+		renderAccounts();
+	</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Daftar siswa kelas XI TKJ 3" />
+	<title>Daftar Siswa | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a class="active" href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+
+		<main>
+			<header class="topbar">
+				<div><div class="eyebrow">Data kelas • XI TKJ 3</div><h1>Daftar siswa</h1><p class="subtitle">Kenali teman-teman yang belajar bersama di kelas XI TKJ 3.</p></div>
+				<div class="date">TOTAL SISWA<strong>34 siswa</strong></div>
+			</header>
+			<section>
+				<div class="section-heading"><h2>34 siswa aktif</h2><div class="toolbar"><span class="count">XI TKJ 3</span><input class="search" id="search" type="search" placeholder="Cari nama siswa..." aria-label="Cari nama siswa" /></div></div>
+				<div class="students" id="studentList"></div><div class="empty" id="emptyState">Nama siswa tidak ditemukan.</div>
+			</section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>

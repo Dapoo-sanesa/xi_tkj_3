@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Kenang-kenangan kelas XI TKJ 3" />
+	<title>Kenang-kenangan | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body class="focus-page memories-page">
+	<a class="focus-back" href="index.html" aria-label="Kembali ke beranda" title="Kembali ke beranda">←</a>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="jadwal.html"><span class="nav-icon">▣</span> Jadwal</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a class="active" href="kenangan.html"><span class="nav-icon">▧</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+
+		<main>
+			<header class="topbar memories-heading">
+				<div><div class="eyebrow">Arsip cerita • XI TKJ 3</div><h1>Kenang-kenangan</h1><p class="subtitle">Momen kecil, tawa besar, dan cerita yang tetap tinggal bersama kita.</p></div>
+				<div class="date">ARSIP<strong>Foto &amp; video bersama</strong></div>
+			</header>
+
+			<section class="memory-intro panel" aria-label="Pembuka kenang-kenangan">
+				<div class="memory-intro-image"><img src="tkj3.png" alt="Foto bersama kelas XI TKJ 3" /></div>
+				<div><div class="eyebrow">Satu kelas, banyak cerita</div><h2>Yang pernah kita jalani, layak untuk diingat.</h2><p>Tempat untuk menyimpan foto dan video kebersamaan kelas XI TKJ 3 sepanjang tahun ajaran 2026 / 2027.</p></div>
+			</section>
+
+			<section class="memory-section" aria-labelledby="photoTitle">
+				<div class="section-heading"><div><div class="eyebrow">Album bersama</div><h2 id="photoTitle">Foto kebersamaan</h2></div><label class="media-upload ghost-button" for="photoUpload">+ Tambah foto<input id="photoUpload" type="file" accept="image/*" multiple /></label></div>
+				<div class="memory-gallery" id="memoryGallery">
+					<figure class="memory-photo memory-photo-wide"><img src="tkj3.png" alt="Momen bersama kelas XI TKJ 3" /><figcaption><strong>Ruang kelas kita</strong><span>XI TKJ 3 · 2026 / 2027</span></figcaption></figure>
+					<figure class="memory-photo"><img src="tkj3.png" alt="Kebersamaan siswa XI TKJ 3" /><figcaption><strong>Satu cerita</strong><span>Hari-hari yang berharga</span></figcaption></figure>
+					<figure class="memory-photo"><img src="tkj3.png" alt="Foto kenangan siswa XI TKJ 3" /><figcaption><strong>Teman seperjalanan</strong><span>Belajar dan tumbuh bersama</span></figcaption></figure>
+				</div>
+			</section>
+
+			<section class="memory-section" aria-labelledby="videoTitle">
+				<div class="section-heading"><div><div class="eyebrow">Rekaman cerita</div><h2 id="videoTitle">Video bersama</h2></div><label class="media-upload ghost-button" for="videoUpload">+ Tambah video<input id="videoUpload" type="file" accept="video/*" /></label></div>
+				<div class="memory-video panel" id="memoryVideoPanel">
+					<div class="video-placeholder"><span class="video-mark">▶</span><strong>Video kenangan kelas</strong><p>Pilih video dari perangkat untuk memutarnya di sini.</p></div>
+					<video id="memoryVideo" controls playsinline hidden></video>
+				</div>
+			</section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const photoUpload = document.querySelector("#photoUpload");
+		const memoryGallery = document.querySelector("#memoryGallery");
+		const videoUpload = document.querySelector("#videoUpload");
+		const memoryVideo = document.querySelector("#memoryVideo");
+		const videoPlaceholder = document.querySelector(".video-placeholder");
+		photoUpload.addEventListener("change", event => {
+			[...event.target.files].forEach(file => {
+				const photo = document.createElement("figure");
+				photo.className = "memory-photo memory-photo-added";
+				photo.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="${file.name}"><figcaption><strong>${file.name}</strong><span>Foto kenangan baru</span></figcaption>`;
+				memoryGallery.append(photo);
+			});
+		});
+		videoUpload.addEventListener("change", event => {
+			const file = event.target.files[0];
+			if (!file) return;
+			memoryVideo.src = URL.createObjectURL(file);
+			memoryVideo.hidden = false;
+			videoPlaceholder.hidden = true;
+			memoryVideo.play().catch(() => {});
+		});
+	</script>
+</body>
+</html>

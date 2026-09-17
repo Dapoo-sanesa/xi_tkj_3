@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Detail siswa XI TKJ 3" />
+	<title>Detail Siswa | XI TKJ 3</title>
+	<link rel="stylesheet" href="style.css" />
+	<style>
+		.student-detail { max-width: 760px; margin: 0 auto; }
+		.detail-card { padding: 34px; text-align: center; }
+		.detail-avatar { width: 92px; height: 92px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 50%; color: white; background: linear-gradient(135deg, #4c2aa9, #9a7bff); font: 700 28px "Space Grotesk", sans-serif; }
+		.detail-card h2 { margin: 8px 0; font-size: clamp(26px, 5vw, 42px); }
+		.detail-card p { color: var(--muted); margin: 0; font-size: 13px; }
+		.detail-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; text-align: left; }
+		.detail-info div { padding: 15px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.03); }
+		.detail-info span { display: block; color: var(--muted); font-size: 10px; }
+		.detail-info strong { display: block; margin-top: 7px; font: 600 14px "Space Grotesk", sans-serif; }
+		.detail-status { display: inline-block; margin-top: 24px; padding: 9px 13px; border-radius: 7px; font: 700 11px "Space Grotesk", sans-serif; }
+		.detail-back { display: inline-block; margin-top: 20px; color: var(--purple-light); font-size: 12px; }
+		@media (max-width: 600px) { .detail-card { padding: 25px 17px; } .detail-info { grid-template-columns: 1fr; } }
+	</style>
+</head>
+<body class="focus-page">
+	<a class="focus-back" href="siswa.html" aria-label="Kembali ke daftar siswa" title="Kembali ke daftar siswa">←</a>
+	<div class="shell">
+		<aside class="sidebar">
+			<div class="brand"><div class="brand-mark">XI</div><div><strong>RUANG KELAS</strong><small>SMKN 1 MOJOKERTO</small></div></div>
+			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Buka menu navigasi"><span></span><span></span><span></span></button>
+			<nav id="mainNavigation" aria-label="Navigasi utama">
+				<a href="index.html"><span class="nav-icon">⌂</span> Beranda</a>
+				<a class="active" href="siswa.html"><span class="nav-icon">♧</span> Daftar siswa</a>
+				<a href="absensi.html"><span class="nav-icon">✓</span> Absensi</a>
+				<a href="layanan-kelas.html"><span class="nav-icon">↗</span> Akses kelas</a>
+				<a href="kenangan.html"><span class="nav-icon">K</span> Kenangan</a>
+				<a href="wali-kelas.html"><span class="nav-icon">◎</span> Wali kelas</a>
+			</nav>
+			<div class="sidebar-footer">TAHUN AJARAN<br><strong>2026 / 2027</strong></div>
+		</aside>
+		<main>
+			<header class="topbar"><div><div class="eyebrow">Profil siswa • XI TKJ 3</div><h1>Detail siswa</h1><p class="subtitle">Informasi siswa dan status absensi hari ini.</p></div><div class="date">KELAS<strong>XI TKJ 3</strong></div></header>
+			<section class="student-detail"><article class="detail-card panel" id="studentDetail"><p>Memuat data siswa...</p></article></section>
+		</main>
+	</div>
+	<script src="script.js"></script>
+	<script>
+		const detail = document.querySelector("#studentDetail");
+		const selectedName = new URLSearchParams(window.location.search).get("nama");
+		const studentIndex = students.indexOf(selectedName);
+		const labels = { "belum-hadir": "Belum hadir", hadir: "Hadir", izin: "Izin", sakit: "Sakit", alpa: "Alpa" };
+		const statusClass = status => `status-${status}`;
+		if (studentIndex === -1) {
+			detail.innerHTML = '<div class="eyebrow">Data tidak ditemukan</div><h2>Siswa tidak tersedia</h2><p>Silakan kembali ke daftar siswa dan pilih nama yang tersedia.</p><a class="detail-back" href="siswa.html">← Kembali ke daftar siswa</a>';
+		} else {
+			const attendance = JSON.parse(localStorage.getItem("xi-tkj-3-attendance") || "{}");
+			const localDate = new Date();
+			const dateKey = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, "0")}-${String(localDate.getDate()).padStart(2, "0")}`;
+			const status = attendance[dateKey]?.[selectedName] || "belum-hadir";
+			const number = String(studentIndex + 1).padStart(2, "0");
+			detail.innerHTML = `<div class="detail-avatar">${initials(selectedName)}</div><div class="eyebrow">Siswa XI TKJ 3</div><h2>${selectedName}</h2><p>Data identitas dan kehadiran siswa hari ini.</p><div class="detail-info"><div><span>Nomor absen</span><strong>${number}</strong></div><div><span>Kode kartu</span><strong>XI-TKJ3-${number}</strong></div><div><span>Status hari ini</span><strong>${labels[status]}</strong></div></div><span class="detail-status ${statusClass(status)}">${labels[status]}</span><br><a class="detail-back" href="siswa.html">← Kembali ke daftar siswa</a>`;
+		}
+	</script>
+</body>
+</html>
