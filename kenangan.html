@@ -61,13 +61,28 @@
 		const videoUpload = document.querySelector("#videoUpload");
 		const memoryVideo = document.querySelector("#memoryVideo");
 		const videoPlaceholder = document.querySelector(".video-placeholder");
+		const savedPhotosKey = "xi-tkj-3-memory-photos";
+		const readSavedPhotos = () => JSON.parse(localStorage.getItem(savedPhotosKey) || "[]");
+		const renderSavedPhoto = photoData => {
+			const photo = document.createElement("figure");
+			photo.className = "memory-photo memory-photo-added";
+			photo.innerHTML = `<img src="${photoData.dataUrl}" alt="${photoData.name}"><figcaption><strong>${photoData.name}</strong><span>Foto kenangan baru</span></figcaption>`;
+			memoryGallery.append(photo);
+		};
+		readSavedPhotos().forEach(renderSavedPhoto);
 		photoUpload.addEventListener("change", event => {
+			const savedPhotos = readSavedPhotos();
 			[...event.target.files].forEach(file => {
-				const photo = document.createElement("figure");
-				photo.className = "memory-photo memory-photo-added";
-				photo.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="${file.name}"><figcaption><strong>${file.name}</strong><span>Foto kenangan baru</span></figcaption>`;
-				memoryGallery.append(photo);
+				const reader = new FileReader();
+				reader.addEventListener("load", () => {
+					const photoData = { name: file.name, dataUrl: reader.result };
+					savedPhotos.push(photoData);
+					localStorage.setItem(savedPhotosKey, JSON.stringify(savedPhotos));
+					renderSavedPhoto(photoData);
+				});
+				reader.readAsDataURL(file);
 			});
+			event.target.value = "";
 		});
 		videoUpload.addEventListener("change", event => {
 			const file = event.target.files[0];
